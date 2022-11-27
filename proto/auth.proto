@@ -10,10 +10,15 @@ service AuthService {
 
 // Register
 
+enum UserRoles {
+  DEFAULT_USER = 0;
+  ADMIN_USER = 1;
+}
+
 message RegisterRequest {
   string email = 1;
   string password = 2;
-  int32 role = 3;
+  UserRoles role = 3;
 }
 
 message RegisterResponse {
