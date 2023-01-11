@@ -1,52 +1,54 @@
 syntax = "proto3";
-
 package auth;
 
-service AuthService {
-  rpc Register (RegisterRequest) returns (RegisterResponse) {}
-  rpc Login (LoginRequest) returns (LoginResponse) {}
-  rpc Validate (ValidateRequest) returns (ValidateResponse) {}
+enum Role {
+  USER = 0;
+  ADMIN = 1;
+  SUPER_ADMIN = 2;
 }
 
-// Register
-
-enum UserRoles {
-  DEFAULT_USER = 0;
-  ADMIN_USER = 1;
+message User {
+  string username = 1;
+  string email = 2;
+  repeated Role roles = 3;
+  string password = 4; //password hash
 }
 
-message RegisterRequest {
-  string email = 1;
-  string password = 2;
-  UserRoles role = 3;
+message SignUpRequest {
+  User user = 1;
 }
 
-message RegisterResponse {
-  int32 status = 1;
-  repeated string error = 2;
+message SignUpResponse {
+  User user = 1;
+  string token = 2; // jwt token
 }
 
-// Login
-
-message LoginRequest {
+message SignInRequest {
   string email = 1;
   string password = 2;
 }
 
-message LoginResponse {
-  int32 status = 1;
-  repeated string error = 2;
-  string token = 3;
+message SignInResponse {
+  User user = 1;
+  string token = 2; // jwt token
 }
 
-// Validate
-
-message ValidateRequest {
+message AuthenticateRequest {
   string token = 1;
 }
 
-message ValidateResponse {
-  int32 status = 1;
-  repeated string error = 2;
-  int32 userId = 3;
+message AuthenticateResponse {
+  User user = 1;
+  Error error = 2;
+}
+
+message Error {
+  int32 code = 1;
+  string message = 2;
+}
+
+service AuthService {
+  rpc SignUp(SignUpRequest) returns (SignUpResponse);
+  rpc SignIn(SignInRequest) returns (SignInResponse);
+  rpc Authenticate(AuthenticateRequest) returns (AuthenticateResponse);
 }
