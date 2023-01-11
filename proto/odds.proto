@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
-
 package odds;
 
 service OddsService {
@@ -22,7 +20,7 @@ message CreateOddsRequest {
   double home_team_win_odds = 4;
   double away_team_win_odds = 5;
   double draw_odds = 6;
-  google.protobuf.Timestamp game_date = 7;
+  string game_date = 7;
 }
 
 message CreateOddsResponse {
@@ -43,12 +41,12 @@ message OddData {
   double home_team_win_odds = 5;
   double away_team_win_odds = 6;
   double draw_odds = 7;
-  google.protobuf.Timestamp game_date = 8;
+  string game_date = 8;
 }
 
 message FindLeagueOddsRequest {
   string league = 1;
-  google.protobuf.Timestamp game_date = 2;
+  string game_date = 2;
 }
 
 message FindLeagueOddsResponse {
