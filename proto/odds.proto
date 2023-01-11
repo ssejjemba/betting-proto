@@ -2,84 +2,78 @@ syntax = "proto3";
 
 package odds;
 
-service OddsService {
-  rpc CreateGameOdds (CreateOddsRequest) returns (CreateOddsResponse) {}
-  rpc FindLeagueOdds (FindLeagueOddsRequest) returns (FindLeagueOddsResponse) {}
-  rpc UpdateGameOdds (UpdateGameOddsRequest) returns (UpdateGameOddsResponse) {}
-  rpc DeleteGameOdds (DeleteGameOddsRequest) returns (DeleteGameOddsResponse) {}
+enum ErrorCode {
+  OK = 0;
+  NOT_FOUND = 1;
+  INVALID_REQUEST = 2;
+  INTERNAL_ERROR = 3;
 }
 
-// CreateGameOdds
-
-// Input: league, home_team, away_team, home_team_win_odds, away_team_win_odds, draw_odds, game_date
-
-message CreateOddsRequest {
-  string league = 1;
-  string home_team = 2;
-  string away_team = 3;
-  double home_team_win_odds = 4;
-  double away_team_win_odds = 5;
-  double draw_odds = 6;
-  string game_date = 7;
+message Error {
+  ErrorCode code = 1;
+  string message = 2;
 }
 
-message CreateOddsResponse {
-  int32 status = 1;
-  repeated string error = 2;
-  int32 id = 3;
-}
-
-// FindLeagueOdds
-
-// Input: league, date
-
-message OddData {
-  int32 id = 1;
+message Odd {
+  int64 id = 1;
   string league = 2;
   string home_team = 3;
   string away_team = 4;
-  double home_team_win_odds = 5;
-  double away_team_win_odds = 6;
-  double draw_odds = 7;
-  string game_date = 8;
+  string game_date = 5;
+  float home_team_win_odd = 6;
+  float draw_odd = 7;
+  float away_team_win_odd = 8;
 }
 
-message FindLeagueOddsRequest {
+message GetOddsRequest {
   string league = 1;
   string game_date = 2;
 }
 
-message FindLeagueOddsResponse {
-  int32 status = 1;
-  repeated string error = 2;
-  repeated OddData data = 3;
+message GetOddsResponse {
+  Error error = 1;
+  repeated Odd odds = 2;
 }
 
-// UpdateGameOdds
-
-// Inputs: id, home_team_win_odds, away_team_win_odds, draw_odds,
-
-message UpdateGameOddsRequest {
-  int32 id = 1;
-  double home_team_win_odds = 2;
-  double away_team_win_odds = 3;
-  double draw_odds = 4;
+message CreateOddRequest {
+  string league = 1;
+  string home_team = 2;
+  string away_team = 3;
+  string game_date = 4;
+  float home_team_win_odd = 5;
+  float draw_odd = 6;
+  float away_team_win_odd = 7;
 }
 
-message UpdateGameOddsResponse {
-  int32 status = 1;
-  repeated string error = 2;
+message CreateOddResponse {
+  Error error = 1;
+  Odd odd = 2;
 }
 
-// DeleteGameOdds
-
-// Inputs: id
-
-message DeleteGameOddsRequest {
-  int32 id = 1;
+message UpdateOddRequest {
+  int64 id = 1;
+  float home_team_win_odd = 2;
+  float draw_odd = 3;
+  float away_team_win_odd = 4;
 }
 
-message DeleteGameOddsResponse {
-  int32 status = 1;
-  repeated string error = 2;
+message UpdateOddResponse {
+  Error error = 1;
+  Odd odd = 2;
+}
+
+message DeleteOddRequest {
+  int64 id = 1;
+}
+
+message DeleteOddResponse {
+  Error error = 1;
+  bool success = 2;
+}
+
+service OddsService {
+  rpc GetOdds(GetOddsRequest) returns (GetOddsResponse);
+  rpc CreateOdd(CreateOddRequest) returns (CreateOddResponse);
+  rpc UpdateOdd(UpdateOddRequest) returns (UpdateOddResponse);
+  rpc DeleteOdd(DeleteOddRequest) returns (DeleteOddResponse);
 }
