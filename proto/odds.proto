@@ -2,18 +2,6 @@ syntax = "proto3";
 
 package odds;
 
-enum ErrorCode {
-  OK = 0;
-  NOT_FOUND = 1;
-  INVALID_REQUEST = 2;
-  INTERNAL_ERROR = 3;
-}
-
-message Error {
-  ErrorCode code = 1;
-  string message = 2;
-}
-
 message Odd {
   int64 id = 1;
   string league = 2;
@@ -31,8 +19,9 @@ message GetOddsRequest {
 }
 
 message GetOddsResponse {
-  Error error = 1;
-  repeated Odd odds = 2;
+  int32 code = 1;
+  string message = 2;
+  repeated Odd odds = 3;
 }
 
 message CreateOddRequest {
@@ -46,8 +35,9 @@ message CreateOddRequest {
 }
 
 message CreateOddResponse {
-  Error error = 1;
-  Odd odd = 2;
+  int32 code = 1;
+  string message = 2;
+  Odd odd = 3;
 }
 
 message UpdateOddRequest {
@@ -58,8 +48,9 @@ message UpdateOddRequest {
 }
 
 message UpdateOddResponse {
-  Error error = 1;
-  Odd odd = 2;
+  int32 code = 1;
+  string message = 2;
+  Odd odd = 3;
 }
 
 message DeleteOddRequest {
@@ -67,8 +58,8 @@ message DeleteOddRequest {
 }
 
 message DeleteOddResponse {
-  Error error = 1;
-  bool success = 2;
+  int32 code = 1;
+  string message = 2;
 }
 
 service OddsService {
