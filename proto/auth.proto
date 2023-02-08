@@ -20,7 +20,6 @@ message SignUpRequest {
 
 message SignUpResponse {
   User user = 1;
-  string token = 2; // jwt token
   int32 code = 3;
   string message = 4;
 }
@@ -32,7 +31,6 @@ message SignInRequest {
 
 message SignInResponse {
   User user = 1;
-  string token = 2; // jwt token
   int32 code = 3;
   string message = 4;
 }
