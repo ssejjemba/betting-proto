@@ -10,7 +10,7 @@ enum Role {
 message User {
   string username = 1;
   string email = 2;
-  Role roles = 3;
+  Role role = 3;
   string password = 4; //password hash
 }
 
